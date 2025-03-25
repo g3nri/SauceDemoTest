@@ -2,15 +2,14 @@ Feature: Login Form Tests
 
   Scenario: UC-1 - Username is required
     Given I open the login page
-    When I enter username "dummy" and password "dummy"
+    When I enter username "test" and password "test"
     And I clear both username and password fields
     And I click the login button
     Then I should see the error message "Epic sadface: Username is required"
 
   Scenario: UC-2 - Password is required
     Given I open the login page
-    When I enter username "dummy" and password "dummy"
-    And I clear the password field only
+    When I enter username "test" and password ""
     And I click the login button
     Then I should see the error message "Epic sadface: Password is required"
 

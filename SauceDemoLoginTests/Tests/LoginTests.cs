@@ -1,9 +1,10 @@
-
-using Xunit;
-using OpenQA.Selenium;
-using SauceDemoLoginTests.Pages;
-using SauceDemoLoginTests.Drivers;
+using System;
 using FluentAssertions;
+using OpenQA.Selenium;
+using SauceDemoLoginTests.Drivers;
+using SauceDemoLoginTests.Pages;
+using SauceDemoLoginTests.Utilities;
+using Xunit;
 
 namespace SauceDemoLoginTests.Tests;
 
@@ -14,26 +15,57 @@ public class LoginTests : IDisposable
 
     public LoginTests()
     {
-        _driver = WebDriverFactory.Create("firefox"); // Или "edge"
+        Logger.Log.Info("Initializing WebDriver");
+        _driver = WebDriverSettings.Create("firefox"); // <-browser
+        _driver.Manage().Window.Maximize();
         _driver.Navigate().GoToUrl("https://www.saucedemo.com/");
         _loginPage = new LoginPage(_driver);
     }
-
+    
     [Fact]
-    public void UC1_LoginForm_ShowsError_WhenCredentialsAreEmpty()
+    public void UC1_ShouldShowUsernameRequired_WhenCredentialsAreEmpty()
     {
-        _loginPage.EnterUsername("test");
-        _loginPage.EnterPassword("test");
-        _loginPage.ClearUsername();
-        _loginPage.ClearPassword();
+        Logger.Log.Info("UC-1: Test Login form with empty credentials");
+
+        _loginPage.SetCredentials("test", "test");
+        _loginPage.ClearCredentials();
         _loginPage.ClickLogin();
 
         var error = _loginPage.GetErrorMessage();
-        error.Should().Be("Username is required");
+        error.Should().Be("Epic sadface: Username is required");
+    }
+
+
+
+    [Fact]
+    public void UC2_ShouldShowPasswordRequired_WhenPasswordIsEmpty()
+    {
+        Logger.Log.Info("UC-2: Test Login form with empty password");
+
+        _loginPage.SetCredentials("test", "");
+        _loginPage.ClickLogin();
+
+        var error = _loginPage.GetErrorMessage();
+        error.Should().Be("Epic sadface: Password is required");
+    }
+
+    [Theory]
+    [InlineData("standard_user")]
+    [InlineData("problem_user")]
+    [InlineData("performance_glitch_user")]
+    public void UC3_ShouldLoginSuccessfully_WithValidCredentials(string username)
+    {
+        Logger.Log.Info($"UC-3: Test successful login for user '{username}'");
+
+        _loginPage.SetCredentials(username, "secret_sauce");
+        _loginPage.ClickLogin();
+
+        _driver.Title.Should().Be("Swag Labs");
     }
 
     public void Dispose()
     {
+        Logger.Log.Info("Closing WebDriver");
         _driver.Quit();
     }
 }
