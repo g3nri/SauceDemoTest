@@ -1,11 +1,10 @@
-
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Edge;
 
-namespace SauceDemoLoginTests.Drivers;
+namespace SauceDemo.WebDriver;
 
-public static class WebDriverSettings
+public static class WebDriverFactory
 {
     public static IWebDriver Create(string browserName)
     {
@@ -18,5 +17,4 @@ public static class WebDriverSettings
 
         return driver;
     }
-
 }

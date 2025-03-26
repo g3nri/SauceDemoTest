@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo> <!-- 🔥 Важно для SpecFlow -->
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <TargetFramework>net9.0</TargetFramework> <!-- 🔥 Важно для SpecFlow -->
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,9 +25,21 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <None Update="log4net.config">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SauceDemo.Common\SauceDemo.Common.csproj" />
+      <ProjectReference Include="..\SauceDemo.Page\SauceDemo.Page.csproj" />
+      <ProjectReference Include="..\SauceDemo.WebDriver\SauceDemo.WebDriver.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Login.feature.cs">
+        <DependentUpon>Login.feature</DependentUpon>
+        <AutoGen>true</AutoGen>
+        <DesignTime>true</DesignTime>
+        <Visible>true</Visible>
+      </Compile>
     </ItemGroup>
 
 </Project>

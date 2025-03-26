@@ -1,7 +1,7 @@
 using log4net;
 using log4net.Config;
 
-namespace SauceDemoLoginTests.Utilities;
+namespace SauceDemo.Common;
 
 public static class Logger
 {

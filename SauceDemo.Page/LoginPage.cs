@@ -1,9 +1,8 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using SauceDemoLoginTests.Utilities;
 
-namespace SauceDemoLoginTests.Pages;
+namespace SauceDemo.Page;
 
 public class LoginPage
 {
@@ -21,17 +20,16 @@ public class LoginPage
     private IWebElement LoginButton => _driver.FindElement(By.CssSelector("#login-button"));
     private IWebElement ErrorMessage => _driver.FindElement(By.CssSelector("[data-test='error']"));
 
-    private void ClearInput(IWebElement element)
+    private static void ClearInput(IWebElement element)
     {
         element.Click();
-        element.SendKeys(Keys.Control + "a");
-        element.SendKeys(Keys.Backspace);
-        element.Clear();
+        element.SendKeys(Keys.Control + "a"); //<-- for Windows users
+        // element.SendKeys(Keys.Command + "a"); //<-- for Mac users
+        element.SendKeys(Keys.Delete);
     }
 
     public void SetCredentials(string username, string password)
     {
-        Logger.Log.Info($"Set username: {username}, password: {password}");
         ClearInput(Username);
         Username.SendKeys(username);
         ClearInput(Password);
@@ -40,14 +38,12 @@ public class LoginPage
 
     public void ClearCredentials()
     {
-        Logger.Log.Info("Clear login and password fields");
         ClearInput(Username);
         ClearInput(Password);
     }
 
     public void ClickLogin()
     {
-        Logger.Log.Info("Click login button");
         LoginButton.Click();
     }
 
@@ -55,7 +51,6 @@ public class LoginPage
     {
         _wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("[data-test='error']")));
         var error = ErrorMessage.Text;
-        Logger.Log.Info($"Captured error: {error}");
         return error;
     }
 }

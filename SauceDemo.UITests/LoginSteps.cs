@@ -1,11 +1,11 @@
 using OpenQA.Selenium;
-using SauceDemoLoginTests.Pages;
-using SauceDemoLoginTests.Utilities;
 using FluentAssertions;
+using SauceDemo.WebDriver;
+using SauceDemo.Page;
+using SauceDemo.Common;
 using TechTalk.SpecFlow;
-using SauceDemoLoginTests.Drivers;
 
-namespace SauceDemoLoginTests.StepDefinitions;
+namespace SauceDemo.UITests;
 
 [Binding]
 public class LoginSteps
@@ -17,7 +17,7 @@ public class LoginSteps
     public void GivenIOpenTheLoginPage()
     {
         Logger.Log.Info("Opening login page");
-        _driver = WebDriverSettings.Create("firefox");
+        _driver = WebDriverFactory.Create("edge");
         _driver.Manage().Window.Maximize();
         _driver.Navigate().GoToUrl("https://www.saucedemo.com/");
         _loginPage = new LoginPage(_driver);

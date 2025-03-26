@@ -1,12 +1,11 @@
-using System;
 using FluentAssertions;
 using OpenQA.Selenium;
-using SauceDemoLoginTests.Drivers;
-using SauceDemoLoginTests.Pages;
-using SauceDemoLoginTests.Utilities;
+using SauceDemo.WebDriver;
+using SauceDemo.Page;
+using SauceDemo.Common;
 using Xunit;
 
-namespace SauceDemoLoginTests.Tests;
+namespace SauceDemo.UITests;
 
 public class LoginTests : IDisposable
 {
@@ -16,7 +15,7 @@ public class LoginTests : IDisposable
     public LoginTests()
     {
         Logger.Log.Info("Initializing WebDriver");
-        _driver = WebDriverSettings.Create("firefox"); // <-browser
+        _driver = WebDriverFactory.Create("firefox"); // <-browser edge or firefox
         _driver.Manage().Window.Maximize();
         _driver.Navigate().GoToUrl("https://www.saucedemo.com/");
         _loginPage = new LoginPage(_driver);
@@ -34,9 +33,7 @@ public class LoginTests : IDisposable
         var error = _loginPage.GetErrorMessage();
         error.Should().Be("Epic sadface: Username is required");
     }
-
-
-
+    
     [Fact]
     public void UC2_ShouldShowPasswordRequired_WhenPasswordIsEmpty()
     {
