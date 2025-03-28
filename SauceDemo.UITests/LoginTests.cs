@@ -64,5 +64,6 @@ public class LoginTests : IDisposable
     {
         Logger.Log.Info("Closing WebDriver");
         _driver.Quit();
+        GC.SuppressFinalize(this);
     }
 }

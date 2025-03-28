@@ -8,7 +8,7 @@ public class LoginPage
 {
     private readonly IWebDriver _driver;
     private readonly WebDriverWait _wait;
-
+    
     public LoginPage(IWebDriver driver)
     {
         _driver = driver;
@@ -24,15 +24,13 @@ public class LoginPage
     {
         element.Click();
         element.SendKeys(Keys.Control + "a"); //<-- for Windows users
-        // element.SendKeys(Keys.Command + "a"); //<-- for Mac users
+        element.SendKeys(Keys.Command + "a"); //<-- for Mac users
         element.SendKeys(Keys.Delete);
     }
 
     public void SetCredentials(string username, string password)
     {
-        ClearInput(Username);
         Username.SendKeys(username);
-        ClearInput(Password);
         Password.SendKeys(password);
     }
 
